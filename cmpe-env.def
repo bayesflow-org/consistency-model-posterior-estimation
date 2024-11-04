@@ -1,0 +1,20 @@
+Bootstrap: docker
+From: python:3.11.8-slim-bookworm
+
+%files
+  requirements.txt /app/requirements.txt
+
+%post
+  apt-get update && apt-get install git g++ make -y && apt-get clean autoclean
+  python -m venv /app/venv
+  cd /app
+  /app/venv/bin/pip install --no-cache-dir -r requirements.txt
+  /app/venv/bin/pip install --no-cache-dir jupyterlab==4.0.6
+  /app/venv/bin/python -c "import cmdstanpy; cmdstanpy.install_cmdstan(version='2.33.1', dir='/opt/cmpe-cmdstan', cores=4)"
+  # /app/venv/bin/pip install --no-cache-dir tensorflow[and-cuda]
+
+%environment
+  export PATH=/app/venv/bin:$PATH
+
+%runscript
+  /app/venv/bin/python

@@ -1,0 +1,9 @@
+train:
+  description: Train Consistency Model on Benchmark
+  main: hyperparameter
+  flags-dest: args
+  flags-import: all
+  output-scalars: off
+  plugins:
+    - python_script
+    - perf
